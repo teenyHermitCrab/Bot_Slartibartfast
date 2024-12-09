@@ -54,4 +54,6 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - Add PM2.5 sensor.  Ikea hack would be interesting: https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911/
 - Add a third display mode that shows graph history of values.  How much memory is available on ESP32-S2?  Recall that writing to filesystem is default disabled.
 - Get larger standalone TFT display running with good layout.  Add settings file fields to allow easy swap.  This is probably a lot of fields since have to deal with sprite locations, font sizes, etc
-- Add small wifi and dashboard connections symbols. 
+- Add small wifi and dashboard connections symbols.
+- Layout for single data mode: temp/humidity feels unbalanced.
+- Probably can save a little space: Converting top-level display to use same sprites as single display mode
