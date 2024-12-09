@@ -14,6 +14,16 @@ A small color TFT (240x135) display provides access to sensor values.
 - You can also individually cycle through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
   - For CO2 display, there is also an emoji to interpret the PPM units display.
 
+|    PPM range  | interpretation| emoji  |
+|--------------:|:-----------|:----------:|
+|     0 - 0449  | great      |            |
+|   450 - 0749  | good       | []()       |
+|   750 - 1249  | OK         | []()       |
+|  1250 - 1249  | concerning | []()       |
+|  1250 - 1999  | ventilate  | []()       |
+|  2000 - 4999  | unhealthy  | []()       |
+|  5000 - 9999  | harmful    | []()       |
+|  10K and up   | danger     | []()       |
 
 add a gif here to show operation
 
