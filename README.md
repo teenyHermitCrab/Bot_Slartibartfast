@@ -57,3 +57,4 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - Add small wifi and dashboard connections symbols.
 - Layout for single data mode: temp/humidity feels unbalanced.
 - Probably can save a little space: Converting top-level display to use same sprites as single display mode
+- Dashboard is currently at Adafruit IO.  Try out other options: Azure, AWS, Heroku
