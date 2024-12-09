@@ -12,20 +12,28 @@ Bot Slartibartfast hosts air quality sensors. It has a small TFT display for dis
 A small color TFT (240x135) display provides access to sensor values.  
 - There is a top-level screen to show all values.
 - You can also individually cycle through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
-  - For CO2 display, there is also an emoji to interpret the PPM units display.
+  - For CO2 display, there is also an emoji to interpret the PPM units display.  Below is an example, probably will make this configurable
+    <br/>
 
-|    PPM range  | interpretation| emoji  |
-|--------------:|:-----------|:----------:|
-|     0 - 0449  | great      |            |
-|   450 - 0749  | good       | []()       |
-|   750 - 1249  | OK         | []()       |
-|  1250 - 1249  | concerning | []()       |
-|  1250 - 1999  | ventilate  | []()       |
-|  2000 - 4999  | unhealthy  | []()       |
-|  5000 - 9999  | harmful    | []()       |
-|  10K and up   | danger     | []()       |
+    |    PPM range  | interpretation| emoji  |
+    |--------------:|:-----------|:----------:|
+    |     0 - 0449  | great      | ![![]()](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/great.png)             |
+    |   450 - 0749  | good       | ![![]()](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/good.png)              |
+    |   750 - 1249  | OK         | ![![]()](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/neutral.png)           |
+    |  1250 - 1249  | concerning | ![![]()](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/neutral_eyes_only.png) |
+    |  1250 - 1999  | ventilate  | ![![]()](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/frown.png)             |
+    |  2000 - 4999  | unhealthy  | ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/frown_sweating.png)        |
+    |  5000 - 9999  | harmful    | ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/fearful_openMouth.png)     |
+    |  10K and up   | danger     | ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/danger.png)                |
+<br/>
 
-add a gif here to show operation
+#### operation demo
+![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/co2_demo.gif)
+
+
+#### Ada IO dashboard
+<img width="736" alt="image" src="https://github.com/user-attachments/assets/89d5cb2f-6a46-4f91-bd6e-825a5bd85e02">
+
 
 
 ## Hardware
@@ -45,4 +53,5 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - Experiment with putting dashboard, sensor, and maybe button monitoring on own task.  CircuitPython doesn't have `threading` module, but does have `asyncio`.
 - Add PM2.5 sensor.  Ikea hack would be interesting: https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911/
 - Add a third display mode that shows graph history of values.  How much memory is available on ESP32-S2?  Recall that writing to filesystem is default disabled.
-- 
+- Get larger standalone TFT display running with good layout.  Add settings file fields to allow easy swap.  This is probably a lot of fields since have to deal with sprite locations, font sizes, etc
+- Add small wifi and dashboard connections symbols. 
