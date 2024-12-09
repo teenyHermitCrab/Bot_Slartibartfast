@@ -33,6 +33,24 @@ A small color TFT (240x135) display provides access to sensor values.
 
 #### Ada IO dashboard
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/89d5cb2f-6a46-4f91-bd6e-825a5bd85e02">
+<br\>
+<br\>
+
+Currently, this data is being uploaded to Adafruit IO dashboard.  Will check out other options later.
+
+
+
+Note:
+- sensor is not located in fixed spot - data will be quite variable.
+- This dashboard doesn't render perfectly on mobile, so there is a separate dashboard I use for mobile
+- The dashboard only updates if you are logged into your Adafruit account, otherwise you'd have to manually refresh page.  I'm not concerned with this, since I plan to check out other dashboard options later.
+
+###### Data with history:
+https://io.adafruit.com/corkhorde/dashboards/air-quality-full
+
+###### Current readings only
+https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
+
 
 
 
