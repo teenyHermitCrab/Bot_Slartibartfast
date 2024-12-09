@@ -1,5 +1,5 @@
 # Bot_Slartibartfast
-CO2, temp, humidity, 2.5 sensor.  Uploads to dashboard.
+CO2, temp, humidity, ~~PM2.5~~ sensor.  Uploads to dashboard.
 
 ## Dependencies
 - [Adafruit CircuitPython](https://github.com/adafruit/circuitpython)
