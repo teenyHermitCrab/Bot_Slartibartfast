@@ -5,7 +5,7 @@ from adafruit_itertools import cycle
 import board
 import displayio
 # local imports below
-from enum import Enum  # no builtin Enum in circuitpython, so this is a hack
+from enum import Enum  # no builtin Enum in CircuitPython, so this is a hack
    
 
 class BotScreen:
@@ -53,7 +53,7 @@ class BotScreen:
 
     
     def __init__(self, settings = None):
-        """First iteration: dont worry about making this too general.  Just use as 
+        """First iteration: don't worry about making this too general.  Just use as
            a spot to keep code out of code.py or robot level
         """
         
@@ -106,7 +106,7 @@ class BotScreen:
         group_top = displayio.Group()
         
         # this append order matters since the first element 'tile_grid_top' is a background, so it needs to be first
-        # other elements (Label objects) could be in any order since they dont overlap, but keep this order so we can 
+        # other elements (Label objects) could be in any order since they don't overlap, but keep this order so we can
         # reference the text values by append order. I.e., append in order of _TextOrderTopLevel
         group_top.append(tile_grid_top)
         group_top.append(co2_label) 
@@ -213,7 +213,7 @@ class BotScreen:
         self._group_top[BotScreen._FieldOrderTop.CO2].text = f'{self._co2: >4}'
         self._group_top[BotScreen._FieldOrderTop.HUMIDITY].text = f'{self._humidity:0.0f}%'
         
-        # circuitpython canna do nested f-strings 
+        # CircuitPython cannot do nested f-strings
         _ = f'{self._temperature_f:0.0f}{chr(176)}'
         self._group_top[BotScreen._FieldOrderTop.TEMPERATURE].text = f'{_: >4}'
         

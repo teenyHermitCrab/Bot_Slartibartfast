@@ -14,7 +14,7 @@ from adafruit_io.adafruit_io import IO_MQTT
 
 
 
-class Ada_IO:
+class AdaFruitDashboard:
     
     def __init__(self, *, on_connect = None, 
                           on_disconnect = None, 
@@ -34,11 +34,10 @@ class Ada_IO:
         self.io.on_publish = on_publish
         self.io.on_subscribe = on_subscribe
         self.io.on_unsubscribe = on_unsubscribe
-        
-
 
         
-    def _connect_to_wifi(self) -> None:
+    @staticmethod
+    def _connect_to_wifi() -> None:
         try:
             print(f'Connecting to network "{os.getenv("CIRCUITPY_WIFI_SSID")}": ', end='')
             wifi.radio.connect(os.getenv("CIRCUITPY_WIFI_SSID"), os.getenv("CIRCUITPY_WIFI_PASSWORD"))
@@ -50,8 +49,7 @@ class Ada_IO:
             print('Board will hard reset in 60 seconds.')
             time.sleep(60)
             microcontroller.reset()
-            
-            
+
     
     def _init_ada_io(self) -> IO_MQTT:
                                
@@ -70,7 +68,6 @@ class Ada_IO:
         io = IO_MQTT(mqtt_client)
         
         return io
-        
     
 
     @property
@@ -89,6 +86,3 @@ class Ada_IO:
         
     def publish(self, feed: str, value) -> None:
         self.io.publish(feed, value)
-        
-    
-        

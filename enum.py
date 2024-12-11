@@ -1,9 +1,8 @@
 
-
 def Enum(*sequential, **named):
-    """This is a hack and not does not enforce normal enumeration behaivor. 
+    """This is a hack and not does not enforce normal enumeration behaviour.
     
-    So use it in friendly ways.  Either expicilty assign unique values or dont assign at all.
+    So use it in friendly ways.  Either explicitly assign unique values or don't assign at all.
     Explicit enumeration also allows any value to be assigned. numbers, strings, whateva
     
     Also, I'm capitalizing this method name so it appears as a constructor call.  maybe this is cursed naming...
