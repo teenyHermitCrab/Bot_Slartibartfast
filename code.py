@@ -1,22 +1,16 @@
-import asyncio
-import os
+i
 import time
 import traceback
 # below are Adafruit imports
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text import bitmap_label,  wrap_text_to_lines
-from adafruit_io.adafruit_io import IO_MQTT, AdafruitIO_MQTTError
-import adafruit_minimqtt.adafruit_minimqtt as MQTT
-#import adafruit_scd4x
 import board
 import displayio
 import microcontroller
 import neopixel
-import socketpool
-import wifi
 # below are local modules
-from air_quality_sensors import AirSensor_SCD4x
-from ada_io import Ada_IO
+from air_quality_sensors import AirSensorSCD4x
+from adafruitdashboard import AdaFruitDashboard
 import callbacks
 
 
@@ -27,17 +21,17 @@ pixel.fill(0)
 display = board.DISPLAY
 
 # CO2, temp, humidity sensor
-sensor = AirSensor_SCD4x()
+sensor = AirSensorSCD4x()
 
 
 # connection to Adafruit IO dashboard
-# will have to check API to see if there is a way to determine avaliable feeds
+# will have to check API to see if there is a way to determine available feeds
 # right now, this will not error if there is not a feed present at Adafruit IO
 feeds = ['neopixel']
 connected = callbacks.get_connected_callback(feeds)
 message = callbacks.get_message_callback(pixel)
-io = Ada_IO(on_connect = connected,
-            on_message = message)
+io = AdaFruitDashboard(on_connect = connected,
+                       on_message = message)
 
 
 
@@ -105,14 +99,14 @@ while True:
             print('#' * 40)
             print(ex)
             print(f'Adafruit connection error: restarting wifi and Adafruit connection')
-            io = Ada_IO(on_connect = connected,
-                        on_message = message)
+            io = AdaFruitDashboard(on_connect = connected,
+                                   on_message = message)
             print(f'reconnect to AdaFruit IO successful')
             print('#' * 40)
 
 
     except Exception as e:  # pylint disable=broad-except
-        # TODO: investigate Exception types recieved.  probaly could just try reinit Ada IO
+        # TODO: investigate Exception types received.  probably could just try reinit Ada IO
         #       a few times before resetting microcontroller
 
         # TODO: log these exceptions locally when you get SD support added,

@@ -18,9 +18,9 @@ def get_connected_callback(feeds: list[str]):
     return connected
     
     
-# checkout community bundle to see if typing module mplemented
+# checkout regular library bundle and community bundle to see if typing module implemented
 def get_message_callback(pixel: NeoPixel):
-    # dont think this could be made general use.  We'll have to know what to we are going
+    # don't think this could be made general use.  We'll have to know what to we are going
     # to do with these messages.
     
     def message(client: MQTT.MQTT, feed_id: str, payload):  # pylint: disable-unused-argument

@@ -25,14 +25,14 @@ I'll keep it this way for now, but revisit this in future tense and decide if yo
          
 '''
 
-class AirSensor_SCD4x:
-    # there are no Enums in circuitpython.  
+class AirSensorSCD4x:
+    # there are no Enums in CircuitPython.
     class MeasurementMode:
         IDLE = 0,  # Only SCD41 allows single-shot mode.  use for manual measurement cycles longer than 30 seconds
                    # or if you only need humidity/temperature at manual cycle rates up to 0.05 seconds
                    # For SCD40, this is used to reduce power consumption
-        SLOW = 1,  # measurement approx every 30 secconds
-        FAST = 2   # measurement approx every 5  secconds
+        SLOW = 1,  # measurement approx every 30 seconds
+        FAST = 2   # measurement approx every 5  seconds
                    
     class SensorModel:
         SCD40 = 1,
@@ -94,7 +94,7 @@ class AirSensor_SCD4x:
         self._scd4x.stop_periodic_measurement()
         
         
-        # crcuitpython does not currently support match/case syntax
+        # CircuitPython does not currently support match/case syntax
         #match self._measurement_mode:
         #    case MeasurementMode.SLOW:
         #        self._scd4x.start_low_periodic_measurement()
@@ -105,9 +105,9 @@ class AirSensor_SCD4x:
         #    case _:
         #        raise ValueError(f'Invalid measurement mode: {measurement_mode}')
         
-        if self.measurement_mode == AirSensor_SCD4x.MeasurementMode.SLOW:
+        if self.measurement_mode == AirSensorSCD4x.MeasurementMode.SLOW:
             self._scd4x.start_low_periodic_measurement()
-        elif self.measurement_mode == AirSensor_SCD4x.MeasurementMode.FAST:
+        elif self.measurement_mode == AirSensorSCD4x.MeasurementMode.FAST:
             self._scd4x.start_periodic_measurement()
             
                 
@@ -132,12 +132,11 @@ class AirSensor_SCD4x:
          
     @property        
     def altitude(self) -> int:
-        '''
-        Returns current altitude setting in meters
-        
-        Note: This command cannot be used during fast, slow measurement modes. Stops measurement mode, then returns sensor to measurment mode after altitude set 
-        '''
-        # NOTE : may need to be in IDLE mode to retreive value
+        """Returns current altitude setting in meters
+
+        Note: This command cannot be used during fast, slow measurement modes. Stops measurement mode, then returns sensor to measurement mode after altitude set
+        """
+        # NOTE : may need to be in IDLE mode to retrieve value
         self._scd4x.stop_periodic_measurement()  # SCD4X must be in idle mode to get value
         altitude = self._scd4x.altitude
         self._start_measurement_mode()  # resumes measurement mode
@@ -145,13 +144,13 @@ class AirSensor_SCD4x:
         
     @altitude.setter
     def altitude(self, height: int) -> None:
-        '''Set altitude in meters.  Setting this value adjusts CO2 measurement calculations to account for the air pressure's effect.  
-        
-        Note: This command cannot be used during fast, slow measurement modes. Stops measurement mode, then returns sensor to measurment mode after altitude set 
-        
+        """Set altitude in meters.  Setting this value adjusts CO2 measurement calculations to account for the air pressure's effect.
+
+        Note: This command cannot be used during fast, slow measurement modes. Stops measurement mode, then returns sensor to measurement mode after altitude set
+
         NOTE: Setting an ambient pressure using set_ambient_pressure overrides any pressure compensation based
-        on a previously set sensor altitude.  
-        '''
+        on a previously set sensor altitude.
+        """
         self._scd4x.stop_periodic_measurement()  # SCD4X must be in idle mode to set value
         self._scd4x.altitude = height
         self._start_measurement_mode()  # resumes measurement mode
@@ -159,7 +158,7 @@ class AirSensor_SCD4x:
             
     @property
     def temperature_offset(self) -> float:
-        # NOTE : may need to be in IDLE mode to retreive value, datasheet suggests this on page 8, but not on page 11
+        # NOTE : may need to be in IDLE mode to retrieve value, datasheet suggests this on page 8, but not on page 11
         self._scd4x.stop_periodic_measurement()
         offset = self._scd4x.temperature_offset
         self._start_measurement_mode()  # resumes measurement mode
@@ -174,7 +173,7 @@ class AirSensor_SCD4x:
         
     @property
     def auto_calibration(self) -> bool:
-        # NOTE : may need to be in IDLE mode to retreive value
+        # NOTE : may need to be in IDLE mode to retrieve value
         self._scd4x.stop_periodic_measurement()
         cal = self._scd4x.self_calibration_enabled
         self._start_measurement_mode()  # resumes measurement mode
@@ -215,10 +214,10 @@ class AirSensor_SCD4x:
         
            This does not return values, 
         """
-        if self._measurement_mode != AirSensor_SCD4x.MeasurementMode.IDLE:
+        if self._measurement_mode != AirSensorSCD4x.MeasurementMode.IDLE:
             raise Exception(f'Must not be in periodic measurement modes when triggering single-shot measurement. Current mode {self._measurement_mode}')
         
-        if self._sensor_model == SensorModel.SCD41:
+        if self._sensor_model == AirSensorSCD4x.SensorModel.SCD41:
             self._scd4x.measure_single_shot_all()
         else: 
             # we are a SCD40, which does not have this capability
@@ -237,11 +236,11 @@ class AirSensor_SCD4x:
     def measure_single_shot_rht_only(self) -> None:
         """On-demand measurement of relative humidity and temperature for SCD41 only   
         """
-        if self._measurement_mode != AirSensor_SCD4x.MeasurementMode.IDLE:
+        if self._measurement_mode != AirSensorSCD4x.MeasurementMode.IDLE:
             raise Exception(f'Must not be in periodic measurement modes when triggering single-shot measurement. Current mode {self._measurement_mode}')
         
         
-        if self._sensor_model == SensorModel.SCD41:
+        if self._sensor_model == AirSensorSCD4x.SensorModel.SCD41:
             self._scd4x.measure_single_shot_rht_only()
         else: 
             # we are a SCD40, which does not have this capability
@@ -268,7 +267,7 @@ class AirSensor_SCD4x:
         '''
         
         # Saving to file requires boot.py and a way to physically toggle ability to write to file.
-        # normally circuitpython will not allow code to write to file system.
+        # normally CircuitPython will not allow code to write to file system.
         
         if on_file:
             self._scd4x.stop_periodic_measurement()
