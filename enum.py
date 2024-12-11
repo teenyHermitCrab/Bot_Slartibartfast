@@ -1,3 +1,4 @@
+import collections
 
 def Enum(*sequential, **named):
     """This is a hack and not does not enforce normal enumeration behaviour.
@@ -23,11 +24,23 @@ def Enum(*sequential, **named):
         Name.BOB   == 0
         Name.CAROL == 1
         Name.DAVE  == 0     O_o
+
+    TODO: this qualifies for unit-testing.  add unit-testing .
     """
     enums = dict(zip(sequential, range(len(sequential))), **named)
-    
-    # TODO: could add a check here for duplicate values 
-    
+
+    # check for duplicate values.  Duplicate values are invalid enumerations
+    key_count = len(list(enums.keys()))
+    unique_value_count = len(set(enums.values()))
+    if key_count != unique_value_count:
+        raise ValueError('Enumerations need to have unique values.')
+
+    # CircuitPython collections modules does not (yet?) have Counter class
+    # enum_value_counts = Counter(enums.values())  # dictionary: keys are enum values, values are counts of occurrences
+    # duplicates = {k:v for k,v in enums.items() if enum_value_counts[v] > 1}
+    # if duplicates:
+    #     raise ValueError(f'Enumerations need to have unique values. Duplicates are :{duplicates}')
+
     # type() with three arguments returns a new type class or essentially a metaclass
     # E.g.:
     # 'Enum'  is this type of object returned
