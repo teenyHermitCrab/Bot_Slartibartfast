@@ -20,8 +20,8 @@ def get_connected_callback(feeds: list[str]):
     
 # checkout regular library bundle and community bundle to see if typing module implemented
 def get_message_callback(pixel: NeoPixel):
-    # don't think this could be made general use.  We'll have to know what to we are going
-    # to do with these messages.
+    # don't think this could be made general use.
+    # We'll have to know beforehand what to we are going to do with these messages.
     
     def message(client: MQTT.MQTT, feed_id: str, payload):  # pylint: disable-unused-argument
         print(f'{feed_id=} received new value: {payload.upper()}')
@@ -30,7 +30,6 @@ def get_message_callback(pixel: NeoPixel):
         if feed_id == feed_on_board_neopixel:
             # colorpicker block appears to send '#------' format where - is a hex digit
             pixel.fill(int(payload[1:], 16))
-        
-        
-        # probably add new handlers here
+
+        #  add other handlers here
     return message

@@ -24,7 +24,7 @@ print('waiting for first measurement....\n')
 
 while False:
     if scd4x.data_ready:
-        print(f'CO2        : {scd4x.CO2:<4} ppm' )
+        print(f'CO2        : {scd4x.CO2:<4} ppm')
         temp_c = scd4x.temperature
         temp_f = (temp_c*9/5)+32
         print(f'Temperature: {temp_f:<4.1f} F   ({temp_c:<4.1f} C)' )

@@ -18,14 +18,17 @@ class BotScreen:
     
     TODO: add usage notes
     """
+
+    # NOTE: using enum hack is kinda shiny, but then have to specify full name. E.g.:,  BotScreen._DisplayLevel.TOP.
+    #       so kinda wordy
     
-    _DisplayLevel = Enum(TOP           = 0,    # all data fields
-                         SINGLE_DATA   = 1, 
-                         SINGLE_GRAPH  = 2,)
+    _DisplayLevel = Enum(TOP           = 0,  # all data fields
+                         SINGLE_DATA   = 1,
+                         SINGLE_GRAPH  = 2, )
 
     _Sensor = Enum(CO2         = 0,
                    TEMPERATURE = 1,
-                   HUMIDITY    = 2,)
+                   HUMIDITY    = 2, )
         
     _BlobSprite = Enum(VERY_GOOD      = 0,
                        GOOD           = 1,
@@ -33,18 +36,18 @@ class BotScreen:
                        CONCERNING     = 3,
                        UNHEALTHY      = 4,
                        VERY_UNHEALTHY = 5,
-                       DANGER         = 6,)
+                       DANGER         = 6, )
     
     
     #These are the order of group appends when constructing the top-level display
     _FieldOrderTop = Enum(CO2         = 1,
                           TEMPERATURE = 3,
-                          HUMIDITY    = 4,)
+                          HUMIDITY    = 4, )
         
     _FieldOrderSingleData = Enum(SPRITE_SENSOR = 0,
                                  SPRITE_BLOB   = 1,
                                  DATA          = 2,
-                                 UNITS         = 3,)
+                                 UNITS         = 3, )
                                  
     #_FieldOrderSingleGraph = Enum(....)
     
@@ -78,6 +81,7 @@ class BotScreen:
         
         
     def _init_group_top(self, settings):
+        """Initial the top-level display."""
         # TODO: decide whether these go to a settings file.  That would probably make it easier to use different displays
         #       If so, may want to store percentage in settings file? then could have a helper method (knowing display resolution)
         #       that could translate to x,y values
@@ -118,6 +122,8 @@ class BotScreen:
         
         
     def _init_group_single_data(self, settings):
+        """Initialize display for single-data mode."""
+
         # TODO: decide whether these go to a settings file.  That would probably make it easier to use different displays
         #       If so, may want to store percentage in settings file? then could have a helper method (knowing display resolution)
         #       that could translate to x,y values
@@ -130,12 +136,12 @@ class BotScreen:
         
         data_label = bitmap_label.Label(font_value, text='8888', 
                                               color=0xFFFFFF, scale=1,
-                                              anchor_point = (1.0, 0.0), anchored_position = (160, 80))
+                                              anchor_point = (1.0, 0.0), anchored_position = (60, 80))
         unit_label = bitmap_label.Label(font_units, text='ppm', 
                                         color=0xFFFFFF, scale=1,
-                                        anchor_point = (0.0, 0.0), anchored_position = (170, 80)) 
+                                        anchor_point = (0.0, 0.0), anchored_position = (70, 80))
          
-        # we dont need an explicit black background, since display is already black when pixels are off
+        # we don't need an explicit black background, since display is already black when pixels are off
         #bitmap_black_background = displayio.OnDiskBitmap(r".\bitmaps\black_background.bmp")
         #tile_grid_background = displayio.TileGrid(bitmap_black_background, 
         #                                          pixel_shader=bitmap_black_background.pixel_shader)
@@ -172,6 +178,7 @@ class BotScreen:
         
         
     def update_values(self, *, co2, temperature_c, humidity) -> None:
+        """Update sensor values (and emoji, if relevant)."""
         self._co2 = co2
         self._temperature_c = temperature_c
         self._temperature_f = (temperature_c*9/5)+32
@@ -183,15 +190,19 @@ class BotScreen:
         
         
     def show_top_display(self) -> None:
+        """Shows top-level display on screen."""
         self._display.root_group = self._group_top
         self._current_display_level = BotScreen._DisplayLevel.TOP
         
         
     def cycle_single_data_display(self) -> None:
-        """This does not deal with data, only the change of display"""
+        """Cycle between the various sensor values. (Single-data display mode)
+
+        This does not deal with data, only the change of display
+        """
         
         if self._current_display_level != BotScreen._DisplayLevel.SINGLE_DATA:  
-            # we display previously shown single data display, dont cycle to next
+            # we display previously shown single data display, don't cycle to next
             
             # no need to modify self._current_data_single_display
             pass
@@ -219,6 +230,7 @@ class BotScreen:
         
         
     def _update_single_data_display_fixed_fields(self) -> None:
+        """Updates the CO2, temp, or humidity symbol. Also updates units field."""
         state = self._current_single_data_display
         #print(f'{self._current_single_data_display=}')
                 
@@ -229,12 +241,12 @@ class BotScreen:
         
         
     def _update_single_data_display_values(self) -> None:
-        # test for current sensor, update values, update emoji if needed
+        """Based on which sensor the user has selected, display those values, emoji"""
         state = self._current_single_data_display
         
         if state == BotScreen._Sensor.CO2:
             self._group_single_data[BotScreen._FieldOrderSingleData.DATA].text = f'{self._co2}'
-            # for CO2, also have update emoji
+            # for CO2, also have update emoji.
             self._group_single_data[BotScreen._FieldOrderSingleData.SPRITE_BLOB].hidden = False
             self._group_single_data[BotScreen._FieldOrderSingleData.SPRITE_BLOB][0] = self._get_emoji()
             
@@ -251,7 +263,8 @@ class BotScreen:
         
     
     def _get_emoji(self) -> _BlobSprite:
-        
+        """Get specific emoji based on CO2 PPM value."""
+
         # TODO: move this range to settings file
         #       
         if self._co2 < 450:
