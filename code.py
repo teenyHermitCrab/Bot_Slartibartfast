@@ -77,9 +77,9 @@ while True:
         if button0.rose:
             bot_screen.show_top_display()
         if button1.rose:
-            bot_screen.cycle_single_data_display()
+            bot_screen.show_single_value_display()
         if button2.rose:
-            bot_screen.cycle_single_graph_display()
+            bot_screen.show_single_graph_display()
 
 
         if sensor.data_ready:
