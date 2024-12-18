@@ -73,17 +73,25 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - 
 
 ## TODO:
-- ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~
-- ~~look through `lib` folder.  There might be dependencies that I'm no longer using~~
+- Updated demo .gif
+- complete dependencies section on this readme.
+- Add settings file.
 - Experiment with putting dashboard, sensor, and maybe button monitoring on own task.  CircuitPython doesn't have `threading` module, but does have `asyncio`.
 - Add PM2.5 sensor.  Ikea hack would be interesting: https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911/
-- ~~Add a third display mode that shows graph history of values.  How much memory is available on ESP32-S2?  Recall that writing to filesystem is default disabled.~~
 - Get larger standalone TFT display running with good layout.  Add settings file fields to allow easy swap.  This is probably a lot of fields since have to deal with sprite locations, font sizes, etc
-- Add small Wifi and dashboard connections symbols.
-- ~~Layout for single data mode: temp/humidity feels unbalanced.~~
-- should create new fonts for single-value mode.  scaling up current fonts looks terrible.
-- ~~Probably can save a little space: Converting top-level display to use same sprites as single display mode~~
+- Add small WiFi and dashboard connections symbols. (maybe only do this on larger screens, 240x135 is too small)
+- should create new fonts for single-value mode.  scaling up current fonts gets jaggy.
+- get logging to work. do we need to add an SD card module or external switch? recall that file writes are default disabled.
+  - There are occasional crashes not currently being addressed.  Probably can see them if using `tio` to view serial output.
 - Dashboard is currently at Adafruit IO.  Try out other options: Azure, AWS, Heroku
 - Need to check out edge cases for graphing plots.  might have to add autoscaling
-- Graphing plots should average for each minute to get a 2-hour plot (or could have that be part of graph-cycling?)
-- Add settings file
+-
+
+
+- ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~
+- ~~look through `lib` folder.  There might be dependencies that I'm no longer using~~
+- ~~Add a third display mode that shows graph history of values.  How much memory is available on ESP32-S2?  Recall that writing to filesystem is default disabled.~~
+- ~~Layout for single data mode: temp/humidity feels unbalanced.~~
+- ~~Probably can save a little space: Converting top-level display to use same sprites as single display mode~~
+- ~~Graphing plots should average for each minute to get a 2-hour plot (or could have that be part of graph-cycling?)~~
+
