@@ -1,3 +1,4 @@
+import time
 from adafruit_bitmap_font import bitmap_font
 from adafruit_itertools import cycle
 from circuitpython_uplot.plot import Plot, color
@@ -48,6 +49,13 @@ class DisplayGraphs:
         # If I didn't have a separate update values method, then probably could just cycle through graph displays directly
         self._current_graph_sensor_idx = next(DisplayGraphs._graph_display_sensors)
 
+        # average any values received (over this interval) before adding to graph
+        self._graph_interval_seconds: int = 60
+        self._co2_interval_values: list[int] = []
+        self._temperature_interval_values: list[float] = []
+        self._humidity_interval_values: list[float] = []
+        self._interval_start_time = time.monotonic()
+
 
     # region initialize graph displays
     def _init_display_co2(self) -> GraphStruct:
@@ -63,9 +71,9 @@ class DisplayGraphs:
 
         my_loggraph = Ulogging(plot=plot,
                                x=[], y=[],
-                               rangex=[121, 0], rangey=[0, 2500],
-                               line_color=color.BLUE,
-                               ticksx=[120, 100, 80, 60, 40, 20, 1, ],
+                               rangex=[120, 0], rangey=[0, 2500],
+                               line_color=color.YELLOW,
+                               ticksx=[120, 100, 80, 60, 40, 20, 0, ],
                                ticksy=[300, 650, 1000, 1750, 2500],
                                tick_pos=False,
                                # limits=[1000, 1750, ],   # limit lines clutter the small 240x135 screen
@@ -86,9 +94,9 @@ class DisplayGraphs:
 
         my_loggraph = Ulogging(plot=plot,
                                x=[], y=[],
-                               rangex=[121, 0], rangey=[30, 110],
-                               line_color=color.BLUE,
-                               ticksx=[120, 100, 80, 60, 40, 20, 1, ],
+                               rangex=[120, 0], rangey=[30, 110],
+                               line_color=color.YELLOW,
+                               ticksx=[120, 100, 80, 60, 40, 20, 0, ],
                                ticksy=[50, 70, 80, 90, 110],
                                tick_pos=False,
                                # limits=[60, 100, ],    # limit lines clutter the small 240x135 screen
@@ -109,13 +117,13 @@ class DisplayGraphs:
 
         my_loggraph = Ulogging(plot=plot,
                                x=[], y=[],
-                               rangex=[121, 0], rangey=[0, 100],
-                               line_color=color.BLUE,
-                               ticksx=[120, 100, 80, 60, 40, 20, 1, ],
+                               rangex=[120, 0], rangey=[0, 100],
+                               line_color=color.YELLOW,
+                               ticksx=[120, 100, 80, 60, 40, 20, 0, ],
                                ticksy=[20, 40, 60, 80, 100],
                                tick_pos=False,
                                ## limit lines clutter the small 240x135 screen
-                               limits=[20, 65, ],
+                               #limits=[20, 65, ],
                                fill=True)
 
         return GraphStruct(group=g, ulog=my_loggraph)
@@ -163,19 +171,41 @@ class DisplayGraphs:
     def update_values(self, *, co2: int, temperature_f: float, humidity: float) -> None:
         """Updates plots on each display, regardless if they are being shown on screen.
 
-            :param co2: CO2 value in ppm.
-            :param temperature_f: Temperature value in °F
-            :param humidity: Relative humidity in %
+        Adds values to interval buffer.  If interval expires, then actually update graphs with average value
+
+        :param co2: CO2 value in ppm.
+        :param temperature_f: Temperature value in °F
+        :param humidity: Relative humidity in %
         """
-        display: GraphStruct = self._graph_displays[Sensors.CO2]
-        self._update_single_graph(display, co2)
 
-        #temperature_f = (temp_c * 9/5) + 32
-        display: GraphStruct = self._graph_displays[Sensors.TEMPERATURE]
-        self._update_single_graph(display, temperature_f)
+        # TODO: this works for now, but the interval check should really be on a separate task
+        #
+        if (time.monotonic() - self._interval_start_time) >= self._graph_interval_seconds:
+            if len(self._co2_interval_values) > 0:
+                avg_co2 = sum(self._co2_interval_values) / len(self._co2_interval_values)
+                display: GraphStruct = self._graph_displays[Sensors.CO2]
+                self._update_single_graph(display, avg_co2)
+                self._co2_interval_values = []
 
-        display: GraphStruct = self._graph_displays[Sensors.HUMIDITY]
-        self._update_single_graph(display, humidity)
+            if len(self._temperature_interval_values) > 0:
+                avg_temperature = sum(self._temperature_interval_values) / len(self._temperature_interval_values)
+                display: GraphStruct = self._graph_displays[Sensors.TEMPERATURE]
+                self._update_single_graph(display, avg_temperature)
+                self._temperature_interval_values = []
+
+            if len(self._humidity_interval_values) > 0:
+                avg_humidity = sum(self._humidity_interval_values) / len(self._humidity_interval_values)
+                display: GraphStruct = self._graph_displays[Sensors.HUMIDITY]
+                self._update_single_graph(display, avg_humidity)
+                self._humidity_interval_values = []
+
+            self._interval_start_time = time.monotonic()
+
+        self._co2_interval_values.append(co2)
+        self._temperature_interval_values.append(temperature_f)
+        self._humidity_interval_values.append(humidity)
+
+
 
     @staticmethod
     def _update_single_graph(display: GraphStruct, sensor_value: int | float) -> None:
@@ -188,9 +218,9 @@ class DisplayGraphs:
         # x,y values needs to be added if we haven't yet filled up graph.
         # If you have filled up graph, then just update y-values so that graph scrolls
         if len(x) < 120:
-            next_x = len(x) + 1
+            next_x = 120 - len(x)   # counting down from 120, since y-axis is labelled 120 ----> 0
             x.append(next_x)
-            y.insert(0, sensor_value)
+            y.append(sensor_value)
         else:
             # the x, y lists are at length 120 so just need to update y values so that plot scrolls
             y.pop()
@@ -221,21 +251,3 @@ class DisplayGraphs:
         display = self._graph_displays[self._current_graph_sensor_idx]
         # recall assigning to root_group is what actually puts this on physical screen
         self._root.root_group = display.display_group
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

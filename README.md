@@ -1,5 +1,7 @@
 # Bot_Slartibartfast
-CO2, temp, humidity, ~~PM2.5~~ sensor.  Uploads to dashboard.
+CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensor.  Uploads to dashboard.
+
+
 
 ## Dependencies
 - [Adafruit CircuitPython](https://github.com/adafruit/circuitpython)
@@ -64,6 +66,11 @@ https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
 ## Implementation notes
 Sensor, web dashboard, and other objects have been moved into their own modules to minimize code in `code.py`  
 
+
+## References
+- [ASHRAE position paper on CO2](https://www.ashrae.org/file%20library/about/position%20documents/pd_indoorcarbondioxide_2022.pdf)
+- There are many charts online.  [Here is an overview](https://www.co2meter.com/blogs/news/carbon-dioxide-indoor-levels-chart) from a company selling CO2 sensors
+- 
 
 ## TODO:
 - ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~

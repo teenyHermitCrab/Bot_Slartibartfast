@@ -42,16 +42,19 @@ io = AdaFruitDashboard(on_connect = connected,
 d0 = digitalio.DigitalInOut(board.D0)
 d0.direction = digitalio.Direction.INPUT
 d0.pull = digitalio.Pull.UP
+# noinspection PyTypeChecker
 button0 = Debouncer(d0)
 
 d1 = digitalio.DigitalInOut(board.D1)
 d1.direction = digitalio.Direction.INPUT
 d1.pull = digitalio.Pull.DOWN
+# noinspection PyTypeChecker
 button1 = Debouncer(d1)
 
 d2 = digitalio.DigitalInOut(board.D2)
 d2.direction = digitalio.Direction.INPUT
 d2.pull = digitalio.Pull.DOWN
+# noinspection PyTypeChecker
 button2 = Debouncer(d2)
 
 
@@ -94,8 +97,8 @@ while True:
             print(f'        CO2 : {co2:>5} ppm' )
             print(f'Temperature : {temp_f:>5.1f} {chr(176)}F    ({temp_c:.1f} {"\u00b0"}C)' )
             print(f'   Humidity : {humidity:>5.1f}%' )
+
             # probably could publish all at once, it might just be using single publish under the hood
-            
             # publish to AdaFruit only at a certain interval, 
             if (time.monotonic() - timestamp) >= dashboard_interval:
                 timestamp = time.monotonic()
