@@ -1,6 +1,5 @@
 from adafruit_bitmap_font import bitmap_font
 from adafruit_display_text import bitmap_label
-import adafruit_imageload
 import displayio
 from enum import Enum
 
