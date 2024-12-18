@@ -73,7 +73,7 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - 
 
 ## TODO:
-- Updated demo .gif
+- Update demo .gif  - show new graph display.  Mount on bot
 - complete dependencies section on this readme.
 - Add settings file.
 - Experiment with putting dashboard, sensor, and maybe button monitoring on own task.  CircuitPython doesn't have `threading` module, but does have `asyncio`.
