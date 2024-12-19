@@ -1,11 +1,12 @@
 # Bot_Slartibartfast
-CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensor.  Uploads to dashboard.
+CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensor.  
+Uploads to data to web dashboard.
 
 
 
 ## Dependencies
 - [Adafruit CircuitPython](https://github.com/adafruit/circuitpython)
-- libraries .  list individually and point to a .zip
+- libraries .  TODO: list individually and point to a .zip
 
 ## Description
 Bot Slartibartfast hosts air quality sensors. It has a small TFT display for displaying values. Buttons next to display cycle the display modes. 
@@ -13,8 +14,8 @@ Bot Slartibartfast also uploads data to Adafruit IO dashboard.
 
 #### display
 A small color TFT (240x135) display provides access to sensor values.  
-- There is a top-level screen to show all values.
-- You can also individually cycle through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
+- There is a top-level screen to show all sensor values.  Press top button to get to this screen.
+- Middle button cycles through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
   - For CO2 display, there is also an emoji to interpret the PPM units display.  Below is an example, probably will make this configurable
     <br/>
 
@@ -29,10 +30,12 @@ A small color TFT (240x135) display provides access to sensor values.
     |   5000 - 9999 | harmful        | ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/fearful_openMouth.png) |
     |    10K and up | danger         |      ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/danger.png)       |
 
+- Bottom button cycles through 2-hour chart for each sensor value.
+
     
 
 #### operation demo
-![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/co2_demo.gif)
+![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/Slartibartfast_demo.gif)
 
 
 #### Ada IO dashboard
@@ -67,15 +70,65 @@ https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
 Sensor, web dashboard, and other objects have been moved into their own modules to minimize code in `code.py`  
 
 
+## How to install and run code on microprocessor board
+### How to install CircuitPython on microprocessor board
+TODO: write up the CircuitPython boot loader install 
+### How to install dependencies on board
+a simple copy to board **lib** folder.  Show example?
+
+### How to setup PyCharm 
+TODO: write up PyCharm setup
+- disable auto-save if connecting to D:\
+- installing dependencies: install to virtual env
+- there was something else...
+- 
+#### serial port monitoring from PyCharm
+While you can use a terminal program, it is not hard to connect to serial port inside PyCharm.  
+
+Install `tio` to connect to serial devices via PyCharm terminal
+
+`tio` is a serial device tool which features a straightforward command-line and configuration file interface to easily connect to serial TTY devices for basic I/O operations.  
+This was how I installed on Windows 11
+
+1. install `msys2`
+    find installer at https://www.msys2.org/
+
+2. after install `msys2`, install `tio`.  On commandline:
+   ```
+    C:Users\CorkHorde> pacman -S tio
+   ```
+
+4. after tio install, connect your serial device and use following command to list devices.  (You can also do this from PyCharm terminal)
+    ```
+    C:Users\CorkHorde> tio --list
+        Device            TID     Uptime [s] Driver           Description
+    ----------------- ---- ------------- ---------------- --------------------------
+    /dev/ttyS5             568943867.930
+    /dev/ttyS7             568943867.930
+    
+    C:Users\CorkHorde>
+    ```
+
+    In my case, my microprocessor board is ttyS7
+
+5. On PyCharm terminal, connect to your serial device.  You should now see serial output from board.
+   ```
+     tio /dev/ttyS7
+   ```
+
+
+
+
 ## References
 - [ASHRAE position paper on CO2](https://www.ashrae.org/file%20library/about/position%20documents/pd_indoorcarbondioxide_2022.pdf)
 - There are many charts online.  [Here is an overview](https://www.co2meter.com/blogs/news/carbon-dioxide-indoor-levels-chart) from a company selling CO2 sensors
 - 
 
 ## TODO:
-- Update demo .gif  - show new graph display.  Mount on bot
+
 - complete dependencies section on this readme.
 - Add settings file.
+- Upload to web dashboard should send average value of upload interval, similar to graph display mode..  Currently it is sending the most recent value.
 - Experiment with putting dashboard, sensor, and maybe button monitoring on own task.  CircuitPython doesn't have `threading` module, but does have `asyncio`.
 - Add PM2.5 sensor.  Ikea hack would be interesting: https://www.ikea.com/us/en/p/vindriktning-air-quality-sensor-60515911/
 - Get larger standalone TFT display running with good layout.  Add settings file fields to allow easy swap.  This is probably a lot of fields since have to deal with sprite locations, font sizes, etc
@@ -84,10 +137,14 @@ Sensor, web dashboard, and other objects have been moved into their own modules 
 - get logging to work. do we need to add an SD card module or external switch? recall that file writes are default disabled.
   - There are occasional crashes not currently being addressed.  Probably can see them if using `tio` to view serial output.
 - Dashboard is currently at Adafruit IO.  Try out other options: Azure, AWS, Heroku
-- Need to check out edge cases for graphing plots.  might have to add autoscaling
+- Need to check out edge cases for graphing plots.
+  - might have to add autoscaling
+  - values off outside **X** or **Y** scales leave artifacts on graph edge.
+    - easy fix: clip values going into graph.
+    - better: update `uplot` library
+- clean up screen mounting on Slartibartfast - perhaps cutout a channel for bamboo mount plate.
 -
-
-
+- ~~Update demo .gif  - show new graph display.  Mount on bot~~
 - ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~
 - ~~look through `lib` folder.  There might be dependencies that I'm no longer using~~
 - ~~Add a third display mode that shows graph history of values.  How much memory is available on ESP32-S2?  Recall that writing to filesystem is default disabled.~~
