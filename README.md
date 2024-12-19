@@ -1,21 +1,22 @@
-# Bot_Slartibartfast
-CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensor.  
-Uploads to data to web dashboard.
+# Bot Slartibartfast
+Slartibartfast carries CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensors.  It holds a small display to show sensor values and recent sensor history.  It also uploads data to web dashboard.
 
 
-
-## Dependencies
-- [Adafruit CircuitPython](https://github.com/adafruit/circuitpython)
-- libraries .  TODO: list individually and point to a .zip
-
-## Description
-Bot Slartibartfast hosts air quality sensors. It has a small TFT display for displaying values. Buttons next to display cycle the display modes. 
-Bot Slartibartfast also uploads data to Adafruit IO dashboard.
+![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/Slartibartfast_demo.gif)
+<br/>
+I had been wondering about various scenarios regarding CO2 levels inside home.
+- CO2 levels during cooking.  
+- Is there a noticeable difference in overnight CO2 profile when sleeping in a closed room compared to ventilated room.
+- How much does using a range hood mitigate CO2 levels when cooking?  Does the vent speed on our range hood actually make a significant difference?
+- How much do 4-legged critters affect overnight levels?
+- How much does a slightly open window improve levels compared to a fully open one.
+- What is CO2 profile when I use van to car camp prior to early morning trail runs? Volume of this 'bedroom' is quite small.
+<br/>
 
 #### display
 A small color TFT (240x135) display provides access to sensor values.  
-- There is a top-level screen to show all sensor values.  Press top button to get to this screen.
-- Middle button cycles through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
+- *Top button* shows all sensor values.
+- *Middle button* cycles through CO2, temperature, and humidity values.  The individual screens are easier to read on this small display.
   - For CO2 display, there is also an emoji to interpret the PPM units display.  Below is an example, probably will make this configurable
     <br/>
 
@@ -30,20 +31,13 @@ A small color TFT (240x135) display provides access to sensor values.
     |   5000 - 9999 | harmful        | ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/fearful_openMouth.png) |
     |    10K and up | danger         |      ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/individual_faces/danger.png)       |
 
-- Bottom button cycles through 2-hour chart for each sensor value.
+- *Bottom button* cycles through 2-hour sensor history
+<br/>
 
-    
-
-#### operation demo
-![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/Slartibartfast_demo.gif)
-
-
-#### Ada IO dashboard
+#### Ada IO web dashboard
 <img width="736" alt="image" src="https://github.com/user-attachments/assets/89d5cb2f-6a46-4f91-bd6e-825a5bd85e02">
 
-
 Currently, this data is being uploaded to Adafruit IO dashboard.  Will check out other options later.
-
 
 Note:
 - sensor is not located in fixed spot - data will be quite variable.
@@ -55,25 +49,30 @@ https://io.adafruit.com/corkhorde/dashboards/air-quality-full
 
 ###### Current readings only
 https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
-
-
-
-
+<br/>
+<br/>
 ## Hardware
 - [ESP32-S2 Reverse TFT Feather](https://www.adafruit.com/product/5345)
 - [Adafruit SCD-41 - True CO2 Temperature and Humidity Sensor - STEMMA QT / Qwiic](https://www.adafruit.com/product/5190)
 
 ### misc
 - [STEMMA QT / Qwiic JST SH 4-Pin Cable - 50mm Long](https://www.adafruit.com/product/4399)
+<br/>
+
+## Code Dependencies
+- [Adafruit CircuitPython](https://github.com/adafruit/circuitpython)
+- libraries .  TODO: list individually and point to a .zip
+  <br/>
+
 
 ## Implementation notes
-Sensor, web dashboard, and other objects have been moved into their own modules to minimize code in `code.py`  
+Sensor, web dashboard, and other objects have been moved into their own modules to minimize code in `code.py`.  
 
 
-## How to install and run code on microprocessor board
-### How to install CircuitPython on microprocessor board
+### How to install and run code on microprocessor board
+#### How to install CircuitPython on microprocessor board
 TODO: write up the CircuitPython boot loader install 
-### How to install dependencies on board
+#### How to install dependencies on board
 a simple copy to board **lib** folder.  Show example?
 
 ### How to setup PyCharm 
@@ -122,7 +121,7 @@ This was how I installed on Windows 11
 ## References
 - [ASHRAE position paper on CO2](https://www.ashrae.org/file%20library/about/position%20documents/pd_indoorcarbondioxide_2022.pdf)
 - There are many charts online.  [Here is an overview](https://www.co2meter.com/blogs/news/carbon-dioxide-indoor-levels-chart) from a company selling CO2 sensors
-- 
+<br/> 
 
 ## TODO:
 
@@ -142,7 +141,7 @@ This was how I installed on Windows 11
   - values off outside **X** or **Y** scales leave artifacts on graph edge.
     - easy fix: clip values going into graph.
     - better: update `uplot` library
-- clean up screen mounting on Slartibartfast - perhaps cutout a channel for bamboo mount plate.
+- clean up screen mounting on Slartibartfast - perhaps cutout a channel for bamboo mount plate.  Or give bot separate arms to grasp bamboo mount.
 -
 - ~~Update demo .gif  - show new graph display.  Mount on bot~~
 - ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~
