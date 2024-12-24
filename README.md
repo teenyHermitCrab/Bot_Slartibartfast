@@ -4,6 +4,24 @@ Slartibartfast carries CO2, temp, humidity, ~~PM2.5~~ (not yet connected) sensor
 
 ![](https://github.com/teenyHermitCrab/Bot_Slartibartfast/blob/main/_misc/Slartibartfast_demo.gif)
 <br/>
+#### Ada IO web dashboard
+<img width="736" alt="image" src="https://github.com/user-attachments/assets/89d5cb2f-6a46-4f91-bd6e-825a5bd85e02">
+
+Currently, this data is being uploaded to Adafruit IO dashboard.  Will check out other options later.
+
+Note:
+- sensor is not located in fixed spot - data will be quite variable.
+- This dashboard doesn't render perfectly on mobile, so there is a separate dashboard I use for mobile
+- The dashboard only updates if you are logged into your Adafruit account, otherwise you'd have to manually refresh page.  I'm not concerned with this, since I plan to check out other dashboard options later.
+
+###### Data with history:
+https://io.adafruit.com/corkhorde/dashboards/air-quality-full
+
+###### Current readings only
+https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
+<br/>
+<br/>
+
 I had been wondering about various scenarios regarding CO2 levels inside home.
 - CO2 levels during cooking.  
 - Is there a noticeable difference in overnight CO2 profile when sleeping in a closed room compared to ventilated room.
@@ -11,7 +29,8 @@ I had been wondering about various scenarios regarding CO2 levels inside home.
 - How much do 4-legged critters affect overnight levels?
 - How much does a slightly open window improve levels compared to a fully open one.
 - What is CO2 profile when I use van to car camp prior to early morning trail runs? Volume of this 'bedroom' is quite small.
-<br/>
+
+
 
 #### display
 A small color TFT (240x135) display provides access to sensor values.  
@@ -34,23 +53,7 @@ A small color TFT (240x135) display provides access to sensor values.
 - *Bottom button* cycles through 2-hour sensor history
 <br/>
 
-#### Ada IO web dashboard
-<img width="736" alt="image" src="https://github.com/user-attachments/assets/89d5cb2f-6a46-4f91-bd6e-825a5bd85e02">
 
-Currently, this data is being uploaded to Adafruit IO dashboard.  Will check out other options later.
-
-Note:
-- sensor is not located in fixed spot - data will be quite variable.
-- This dashboard doesn't render perfectly on mobile, so there is a separate dashboard I use for mobile
-- The dashboard only updates if you are logged into your Adafruit account, otherwise you'd have to manually refresh page.  I'm not concerned with this, since I plan to check out other dashboard options later.
-
-###### Data with history:
-https://io.adafruit.com/corkhorde/dashboards/air-quality-full
-
-###### Current readings only
-https://io.adafruit.com/corkhorde/dashboards/air-quality-mobile
-<br/>
-<br/>
 ## Hardware
 - [ESP32-S2 Reverse TFT Feather](https://www.adafruit.com/product/5345)
 - [Adafruit SCD-41 - True CO2 Temperature and Humidity Sensor - STEMMA QT / Qwiic](https://www.adafruit.com/product/5190)
