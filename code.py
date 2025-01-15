@@ -64,9 +64,13 @@ dashboard_interval = 60  #Adafruit IO dashboard upload interval in seconds
 while True:
     try:
         # keep connect in loop so that it reconnects if odd disconnection
-        if not io.is_connected:
+        if not io.connected_to_wifi:
+            print('no wifi')
+            io = AdaFruitDashboard(on_connect=connected,
+                                   on_message=message)
+        if not io.is_connected_to_dashboard:
             print('Connecting to Adafruit IO:')
-            io.connect()
+            io.connect_to_dashboard()
             print('Connection to Adafruit done.')
 
         # pump message loop - allows us to respond to dashboard events.
@@ -93,17 +97,17 @@ while True:
             
             bot_screen.update_values(co2 = co2, temperature_c = temp_c, humidity = humidity)
 
-            print()
-            print(f'        CO2 : {co2:>5} ppm' )
-            print(f'Temperature : {temp_f:>5.1f} {chr(176)}F    ({temp_c:.1f} {"\u00b0"}C)' )
-            print(f'   Humidity : {humidity:>5.1f}%' )
+            # print()
+            # print(f'        CO2 : {co2:>5} ppm' )
+            # print(f'Temperature : {temp_f:>5.1f} {chr(176)}F    ({temp_c:.1f} {"\u00b0"}C)' )
+            # print(f'   Humidity : {humidity:>5.1f}%' )
 
             # probably could publish all at once, it might just be using single publish under the hood
             # publish to AdaFruit only at a certain interval, 
             if (time.monotonic() - timestamp) >= dashboard_interval:
                 timestamp = time.monotonic()
-                if io.is_connected:
-                    print(f'\nuploading to dashboard: ')
+                if io.connected_to_wifi and io.is_connected_to_dashboard:
+                    #print(f'\nuploading to dashboard: ')
                     io.publish('air-quality-sensors.co2', co2)
                     io.publish('air-quality-sensors.humidity', humidity)
                     io.publish('air-quality-sensors.temperature', temp_f)
