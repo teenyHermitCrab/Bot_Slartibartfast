@@ -59,16 +59,21 @@ button2 = Debouncer(d2)
 
 
 
-timestamp = 0
+start_time_wifi = time.monotonic()
+start_time_dashboard = time.monotonic()
 dashboard_interval = 60  #Adafruit IO dashboard upload interval in seconds
+wifi_interval = 300 # 2 minute checks for wifi connection.
+                    # Until experiments with asyncio are done, the wifi scan is too long to allow responsive buttons
 while True:
     try:
         # keep connect in loop so that it reconnects if odd disconnection
-        if not io.connected_to_wifi:
+        duration_wifi = time.monotonic() - start_time_wifi
+        if not io.connected_to_wifi and (duration_wifi > wifi_interval):
             print('no wifi')
             io = AdaFruitDashboard(on_connect=connected,
                                    on_message=message)
-        if not io.is_connected_to_dashboard:
+            start_time_wifi = time.monotonic()
+        if io.connected_to_wifi and not io.is_connected_to_dashboard:
             print('Connecting to Adafruit IO:')
             io.connect_to_dashboard()
             print('Connection to Adafruit done.')
@@ -103,14 +108,15 @@ while True:
             # print(f'   Humidity : {humidity:>5.1f}%' )
 
             # probably could publish all at once, it might just be using single publish under the hood
-            # publish to AdaFruit only at a certain interval, 
-            if (time.monotonic() - timestamp) >= dashboard_interval:
-                timestamp = time.monotonic()
+            # publish to AdaFruit only at a certain interval,
+            duration_dashboard = time.monotonic() - start_time_dashboard
+            if duration_dashboard >= dashboard_interval:
                 if io.connected_to_wifi and io.is_connected_to_dashboard:
                     #print(f'\nuploading to dashboard: ')
                     io.publish('air-quality-sensors.co2', co2)
                     io.publish('air-quality-sensors.humidity', humidity)
                     io.publish('air-quality-sensors.temperature', temp_f)
+                start_time_dashboard = time.monotonic()
 
     # exception case seems to originate from .publish but will need on-board logging to catch this.
     # Recall that file-writes are default disabled

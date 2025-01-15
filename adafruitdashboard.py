@@ -26,7 +26,9 @@ class AdaFruitDashboard:
 
 
 
-        # TODO: probably should split up wifi and Adafruit wrappers
+        # TODO: probably should split up wifi and Adafruit wrappers.
+        # TODO: scanning for wifi several seconds if no connection immediately found.  this will lock up responsive button presses
+        #       so need to experiment with asyncio here
 
         # initialize Adafruit IO MQTT helper, not yet connected
         self.io = None
@@ -43,6 +45,7 @@ class AdaFruitDashboard:
 
     @property
     def connected_to_wifi(self):
+        # NOTE: CIRCUITPY_WIFI_SSID, CIRCUITPY_WIFI_PASSWORD fields in settings.toml will be automagically used.
         return wifi.radio.connected
 
 
@@ -90,7 +93,7 @@ class AdaFruitDashboard:
                     print(f'connected to {network.ssid=}')
                     break
             duration = time.monotonic() - timestamp
-            print(f'stop wifi scan {duration=}')
+            print(f'stop wifi scan {duration=}  {wifi.radio.connected=}')
             return wifi.radio.connected
         # TODO: could make this a loop that retries a few times before microcontroller reset
         # TODO: when you figure out how to write to local log (default: writes are disabled) make sure to log this
