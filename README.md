@@ -127,7 +127,9 @@ This was how I installed on Windows 11
 <br/> 
 
 ## TODO:
-
+- allow multiple wifi networks.
+- allow no wifi connection - recheck for network (time this. if long check time, then only check at specified interval.  When you add asyncio, then it can check on its own)
+- screen is loose on front of bot.  
 - complete dependencies section on this readme.
 - Add settings file.
 - Upload to web dashboard should send average value of upload interval, similar to graph display mode..  Currently it is sending the most recent value.
