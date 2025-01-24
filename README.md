@@ -127,8 +127,6 @@ This was how I installed on Windows 11
 <br/> 
 
 ## TODO:
-- allow multiple wifi networks.
-- allow no wifi connection - recheck for network (time this. if long check time, then only check at specified interval.  When you add asyncio, then it can check on its own)
 - screen is loose on front of bot.  
 - complete dependencies section on this readme.
 - Add settings file.
@@ -147,7 +145,8 @@ This was how I installed on Windows 11
     - easy fix: clip values going into graph.
     - better: update `uplot` library
 - clean up screen mounting on Slartibartfast - perhaps cutout a channel for bamboo mount plate.  Or give bot separate arms to grasp bamboo mount.
--
+- ~~allow multiple wifi networks.~~
+- ~~allow no wifi connection - recheck for network~~ (time this. if long check time, then only check at specified interval.  When you add asyncio, then it can check on its own)
 - ~~Update demo .gif  - show new graph display.  Mount on bot~~
 - ~~reduce bitmap file sizes.  Convert RGB files to indexed format~~
 - ~~look through `lib` folder.  There might be dependencies that I'm no longer using~~
